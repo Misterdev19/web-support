@@ -1,0 +1,59 @@
+---
+// Frame for a generated isometric figure: the plate markup and its live script come from a build in /figures.
+import '../../../figures/kit/iso.css';
+
+interface Props {
+	html: string;
+	script: string;
+}
+
+const { html, script } = Astro.props;
+---
+
+<div class="iso brand-figure" data-theme="dark">
+	<Fragment set:html={html} />
+</div>
+<script is:inline set:html={script} />
+
+<style is:global>
+	/* The figure keeps its own greys; the brand supplies the accent, the type and the frame. */
+	.brand-figure.iso {
+		--anatomy-card: var(--color-surface);
+		--anatomy-lit: var(--color-accent);
+		--anatomy-text: var(--color-text-body);
+		--anatomy-muted: var(--color-text-muted);
+		--anatomy-mono: var(--font-mono);
+	}
+
+	.brand-figure .iso-figure {
+		margin: 0;
+	}
+
+	/* The hint sits on its own line above the readout, so the two never collide in a narrow card. */
+	.brand-figure .iso-plate {
+		padding-bottom: 72px;
+		box-shadow: 0 0 0 1px var(--color-border-strong);
+	}
+
+	.brand-figure .iso-plate-corner {
+		font-size: var(--text-xs);
+	}
+
+	.brand-figure .iso-plate-corner[data-corner='hint'] {
+		bottom: 22px;
+	}
+
+	.brand-figure .lp-flow {
+		stroke-width: 1.1px;
+	}
+
+	.brand-figure .fig-stage {
+		outline: none;
+		touch-action: pan-y;
+	}
+
+	.brand-figure .fig-stage:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 6px;
+	}
+</style>

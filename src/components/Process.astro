@@ -1,0 +1,111 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const steps = [
+	{
+		title: 'Nos cuentas el problema',
+		text: 'Nos escribes contando qué le pasa a tu equipo (falla, ruido, se calienta) o qué computador quieres armar.',
+		meta: 'Respuesta: inmediata',
+	},
+	{
+		title: 'Revisamos tu equipo',
+		text: 'Recibimos tu equipo y le hacemos pruebas para encontrar la causa exacta de la falla en menos de 24 horas.',
+		meta: 'Tiempo: 12 - 24 horas',
+	},
+	{
+		title: 'Te damos el precio',
+		text: 'Te enviamos el presupuesto con el detalle de piezas, mano de obra y tiempos. No tocamos nada sin tu aprobación.',
+		meta: 'Precio cerrado',
+	},
+	{
+		title: 'Prueba y entrega',
+		text: 'Armamos todo, probamos el equipo a máxima exigencia y te lo entregamos con certificado de servicio y garantía.',
+		meta: 'Certificado + garantía',
+	},
+];
+---
+
+<section id="proceso" class="process">
+	<div class="container">
+		<SectionHeader
+			label="Cómo trabajamos"
+			title="Proceso de servicio en 4 pasos."
+			aside="Transparencia // Sin costos ocultos"
+		/>
+		<ol class="process__steps">
+			{
+				steps.map((step, index) => (
+					<li class="step">
+						<span class="step__number" aria-hidden="true">
+							{String(index + 1).padStart(2, '0')}.
+						</span>
+						<h3 class="step__title">{step.title}</h3>
+						<p class="step__text">{step.text}</p>
+						<p class="step__meta">{step.meta}</p>
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>
+
+<style>
+	.process {
+		padding-block: var(--space-section);
+		border-top: var(--border);
+	}
+
+	.process__steps {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: var(--space-5);
+	}
+
+	.step {
+		display: flex;
+		flex-direction: column;
+		padding: var(--space-5);
+		background: var(--color-surface);
+		border-top: 2px solid var(--color-text);
+	}
+
+	.step__number {
+		color: var(--color-text);
+		font-family: var(--font-mono);
+		font-size: var(--text-2xl);
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.step:nth-child(odd) {
+		border-top-color: var(--color-accent);
+	}
+
+	.step:nth-child(odd) .step__number {
+		color: var(--color-accent);
+	}
+
+	.step__title {
+		margin-top: var(--space-5);
+		font-size: var(--text-xl);
+	}
+
+	.step__text {
+		margin-top: var(--space-2);
+		margin-bottom: var(--space-5);
+		color: var(--color-text-muted);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+	}
+
+	.step__meta {
+		padding-top: var(--space-4);
+		margin-top: auto;
+		border-top: var(--border);
+		color: var(--color-text-muted);
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+	}
+</style>

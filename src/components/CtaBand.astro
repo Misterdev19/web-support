@@ -1,0 +1,95 @@
+---
+import { whatsappUrl } from '../data/site';
+import Button from './Button.astro';
+---
+
+<section class="cta on-accent" aria-labelledby="cta-title">
+	<div class="container cta__inner">
+		<p class="label cta__label">// Atención inmediata</p>
+		<h2 id="cta-title" class="cta__title">
+			¿Tu equipo necesita reparación o más potencia?<span class="cursor" aria-hidden="true">_</span>
+		</h2>
+		<p class="cta__lead">
+			No dejes tu equipo en manos improvisadas. Atendemos casos urgentes el mismo día.
+		</p>
+		<div class="cta__actions">
+			<Button
+				href={whatsappUrl('Hola, necesito atención inmediata para mi equipo.')}
+				target="_blank"
+				rel="noopener noreferrer"
+				variant="inverse"
+				size="lg"
+				icon="arrow-up-right"
+			>
+				Contactar por WhatsApp
+			</Button>
+			<Button href="#contacto" variant="outline" size="lg" icon="arrow-up-right">Solicitar cotización formal</Button>
+		</div>
+	</div>
+	<span class="cta__mark" aria-hidden="true">Kinetic</span>
+</section>
+
+<style>
+	.cta {
+		position: relative;
+		overflow: hidden;
+		padding-block: var(--space-section);
+		background: var(--color-accent);
+		color: var(--color-on-accent);
+	}
+
+	.cta__inner {
+		position: relative;
+		z-index: 1;
+	}
+
+	.cta__label {
+		color: var(--color-on-accent);
+		font-weight: 700;
+	}
+
+	.cta__title {
+		max-width: 52rem;
+		margin-top: var(--space-3);
+		color: var(--color-on-accent);
+		font-size: clamp(2.5rem, 1.25rem + 5.5vw, 6rem);
+		line-height: var(--leading-tight);
+		text-wrap: balance;
+	}
+
+	.cta__lead {
+		max-width: 42rem;
+		margin-top: var(--space-5);
+		font-family: var(--font-mono);
+		font-size: clamp(var(--text-base), 0.9rem + 0.4vw, var(--text-lg));
+	}
+
+	.cta__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-4);
+		margin-top: var(--space-6);
+	}
+
+	.cta__mark {
+		position: absolute;
+		right: -0.04em;
+		bottom: -0.3em;
+		color: color-mix(in srgb, var(--color-on-accent) 10%, var(--color-accent));
+		font-family: var(--font-display);
+		font-size: clamp(6rem, 18vw, 16rem);
+		font-weight: 700;
+		line-height: 1;
+		text-transform: uppercase;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	@media (max-width: 40rem) {
+		.cta__actions :global(.button) {
+			width: 100%;
+			white-space: normal;
+			text-align: center;
+		}
+	}
+</style>

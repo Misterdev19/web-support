@@ -1,0 +1,221 @@
+---
+import Button from './Button.astro';
+import SectionHeader from './SectionHeader.astro';
+import LoopFigure from './figures/LoopFigure.astro';
+
+const stats = [
+	{ value: 'Temperatura estable', note: 'Refrigeración líquida' },
+	{ value: 'Silencioso', note: '28 dB de ruido' },
+	{ value: 'Piezas equilibradas', note: 'Ninguna frena a otra' },
+];
+
+const tiers = [
+	{
+		id: '01',
+		name: 'Juegos competitivos',
+		spec: 'Imagen muy fluida (240 Hz)',
+		title: 'Máxima fluidez',
+		text: 'Pensado para juegos como Valorant, CS2, Warzone y Apex: responde al instante y mantiene la imagen fluida, sin caídas.',
+	},
+	{
+		id: '02',
+		name: 'Gráficos al máximo',
+		spec: 'Resolución 4K',
+		title: 'Pura potencia gráfica',
+		text: 'Para jugar en 4K con todos los detalles activados. Lleva tarjeta gráfica RTX Serie 40, memoria rápida y disco de alta velocidad.',
+		featured: true,
+	},
+	{
+		id: '03',
+		name: 'Trabajo profesional',
+		spec: 'Video / 3D / IA',
+		title: 'Estación de creación',
+		text: 'Para edición de video, animación 3D e inteligencia artificial. Hasta 128 GB de memoria, dos tarjetas gráficas y discos duplicados para no perder tu trabajo si uno falla.',
+	},
+];
+---
+
+<section id="pc-gamer" class="pc-gamer">
+	<div class="container">
+		<SectionHeader
+			label="Armado a medida"
+			title="PC Gamer y de trabajo a medida."
+			lead="Cada equipo se diseña para que no se caliente de más. Así trabaja la refrigeración líquida cuando el computador pasa de reposo a máxima exigencia."
+			aside="Cada equipo se prueba 24 horas antes de entregarse"
+		/>
+		<div class="pc-gamer__layout">
+			<div class="pc-gamer__build">
+				<div class="pc-gamer__figure">
+					<LoopFigure />
+				</div>
+				<ul class="pc-gamer__stats">
+					{
+						stats.map((stat, index) => (
+							<li class:list={['stat', index % 2 === 0 && 'stat--accent']}>
+								<strong class="stat__value">{stat.value}</strong>
+								<span class="stat__note">{stat.note}</span>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div class="pc-gamer__tiers">
+				<ol class="tiers">
+					{
+						tiers.map((tier) => (
+							<li>
+								<article class:list={['tier', tier.featured && 'tier--featured']}>
+									{tier.featured && <p class="tier__badge">Más solicitado</p>}
+									<p class="tier__meta">
+										<span class="tier__name">
+											[Nivel {tier.id}] {tier.name}
+										</span>
+										<span class="tier__spec">{tier.spec}</span>
+									</p>
+									<h3 class="tier__title">{tier.title}</h3>
+									<p class="tier__text">{tier.text}</p>
+								</article>
+							</li>
+						))
+					}
+				</ol>
+				<Button href="#contacto" size="lg" icon="arrow-up-right">Cotizar mi PC a medida</Button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.pc-gamer {
+		padding-block: var(--space-section);
+		border-top: var(--border);
+	}
+
+	.pc-gamer__layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+		align-items: start;
+		gap: var(--space-6);
+	}
+
+	.pc-gamer__build {
+		display: grid;
+		gap: var(--space-4);
+		max-width: 38rem;
+	}
+
+	.pc-gamer__stats {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-3);
+	}
+
+	.stat {
+		display: grid;
+		gap: var(--space-1);
+		padding: var(--space-3) var(--space-2);
+		background: var(--color-surface);
+		border: var(--border);
+		font-family: var(--font-mono);
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.stat__value {
+		color: var(--color-text);
+		font-size: var(--text-sm);
+		letter-spacing: 0.06em;
+	}
+
+	.stat--accent .stat__value {
+		color: var(--color-accent);
+	}
+
+	.stat__note {
+		color: var(--color-text-muted);
+		font-size: 0.6875rem;
+		letter-spacing: 0.06em;
+	}
+
+	.pc-gamer__tiers,
+	.tiers {
+		display: grid;
+		gap: var(--space-5);
+	}
+
+	.pc-gamer__tiers :global(.button) {
+		width: 100%;
+		white-space: normal;
+		text-align: center;
+	}
+
+	.tier {
+		position: relative;
+		padding: var(--space-5);
+		background: var(--color-surface);
+		border: var(--border);
+	}
+
+	.tier--featured {
+		border: 2px solid var(--color-accent);
+	}
+
+	.tier__badge {
+		position: absolute;
+		top: 0;
+		right: var(--space-4);
+		padding: var(--space-1) var(--space-2);
+		background: var(--color-accent);
+		color: var(--color-on-accent);
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		transform: translateY(-60%);
+	}
+
+	.tier__meta {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: var(--space-1) var(--space-4);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		letter-spacing: 0.06em;
+	}
+
+	.tier__name {
+		color: var(--color-accent);
+		text-transform: uppercase;
+	}
+
+	.tier__spec {
+		color: var(--color-text-muted);
+	}
+
+	.tier__title {
+		margin-top: var(--space-3);
+		font-size: var(--text-xl);
+	}
+
+	.tier__text {
+		margin-top: var(--space-2);
+		color: var(--color-text-muted);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+	}
+
+	@media (max-width: 60rem) {
+		.pc-gamer__layout {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+
+	@media (max-width: 30rem) {
+		.pc-gamer__stats {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

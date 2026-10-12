@@ -1,0 +1,58 @@
+---
+interface Props {
+	label: string;
+	title: string;
+	lead?: string;
+	aside?: string;
+}
+
+const { label, title, lead, aside } = Astro.props;
+---
+
+<header class="section-header">
+	<div class="section-header__main">
+		<p class="label">// {label}</p>
+		<h2 class="section-header__title">{title}<span class="cursor" aria-hidden="true">_</span></h2>
+		{lead && <p class="section-header__lead">{lead}</p>}
+	</div>
+	{aside && <p class="section-header__aside">{aside}</p>}
+</header>
+
+<style>
+	.section-header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: var(--space-4) var(--space-6);
+		margin-bottom: var(--space-7);
+	}
+
+	.section-header__main {
+		display: grid;
+		flex: 1 1 30rem;
+		gap: var(--space-3);
+		min-width: 0;
+	}
+
+	.section-header__title {
+		font-size: var(--text-4xl);
+		line-height: 1;
+		text-wrap: balance;
+	}
+
+	.section-header__lead {
+		max-width: 40rem;
+		color: var(--color-text-body);
+		font-size: var(--text-lg);
+	}
+
+	.section-header__aside {
+		max-width: 20rem;
+		color: var(--color-text-muted);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+	}
+</style>

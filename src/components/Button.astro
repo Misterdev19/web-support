@@ -1,0 +1,123 @@
+---
+interface Props {
+	href?: string;
+	type?: 'button' | 'submit';
+	target?: string;
+	rel?: string;
+	variant?: 'primary' | 'ghost' | 'inverse' | 'outline';
+	size?: 'md' | 'lg';
+	icon?: 'arrow-up-right' | 'arrow-down';
+	class?: string;
+}
+
+const { href, variant = 'primary', size = 'md', icon, class: className, ...rest } = Astro.props;
+
+const icons = { 'arrow-up-right': '↗', 'arrow-down': '↓' };
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag href={href} class:list={['button', `button--${variant}`, `button--${size}`, className]} {...rest}>
+	<slot />
+	{icon && <span class="button__icon" aria-hidden="true">{icons[icon]}</span>}
+</Tag>
+
+<style>
+	.button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-3);
+		min-height: 2.75rem;
+		padding: var(--space-3) var(--space-5);
+		border: 1px solid transparent;
+		text-transform: uppercase;
+		white-space: nowrap;
+		cursor: pointer;
+		transition:
+			background-color var(--transition),
+			border-color var(--transition),
+			color var(--transition),
+			box-shadow var(--transition),
+			transform var(--transition);
+	}
+
+	.button--lg {
+		min-height: 3.5rem;
+		padding-inline: var(--space-6);
+	}
+
+	.button--primary,
+	.button--inverse {
+		box-shadow: var(--shadow-hard);
+		font-family: var(--font-display);
+		font-size: var(--text-sm);
+		font-weight: 700;
+		letter-spacing: 0.06em;
+	}
+
+	.button--primary {
+		background: var(--color-accent);
+		color: var(--color-on-accent);
+	}
+
+	.button--inverse {
+		background: var(--color-on-accent);
+		color: var(--color-text);
+	}
+
+	.button--primary.button--lg,
+	.button--inverse.button--lg {
+		font-size: var(--text-lg);
+	}
+
+	.button--primary:hover,
+	.button--inverse:hover {
+		box-shadow: 2px 2px 0 var(--color-text);
+		transform: translate(2px, 2px);
+	}
+
+	.button--primary:hover {
+		background: var(--color-accent-hover);
+	}
+
+	.button--ghost,
+	.button--outline {
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		letter-spacing: var(--tracking-label);
+	}
+
+	.button--ghost {
+		background: var(--color-surface);
+		border-color: var(--color-border-strong);
+		color: var(--color-text);
+	}
+
+	.button--ghost:hover {
+		background: var(--color-surface-raised);
+		border-color: var(--color-accent);
+	}
+
+	.button--ghost .button__icon {
+		color: var(--color-accent);
+	}
+
+	/* For accent-coloured surfaces. */
+	.button--outline {
+		background: transparent;
+		border: 2px solid var(--color-on-accent);
+		color: var(--color-on-accent);
+	}
+
+	.button--outline:hover {
+		background: var(--color-on-accent);
+		color: var(--color-text);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.button--primary:hover,
+		.button--inverse:hover {
+			transform: none;
+		}
+	}
+</style>

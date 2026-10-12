@@ -1,0 +1,95 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const standards = [
+	{
+		title: 'Diagnóstico con instrumentos',
+		text: 'Usamos equipos de medición y una cámara térmica para encontrar fallas que no se ven a simple vista.',
+	},
+	{
+		title: 'Atención directa 1 a 1',
+		text: 'Hablas directamente con el ingeniero responsable de tu equipo, sin intermediarios ni respuestas automáticas.',
+	},
+	{
+		title: 'Fotos del antes y después',
+		text: 'Te enviamos por WhatsApp fotos del antes y el después de cada pieza que tocamos.',
+	},
+	{
+		title: 'Asesoría honesta',
+		text: 'Te recomendamos solo lo que tu equipo necesita, según rendimiento y precio, sin venderte piezas de más.',
+	},
+	{
+		title: 'Garantía escrita',
+		text: 'Garantía por escrito de hasta 6 meses en todas las reparaciones y armados que hacemos.',
+	},
+];
+---
+
+<section id="laboratorio" class="lab">
+	<div class="container">
+		<SectionHeader
+			label="Por qué elegirnos"
+			title="Ingeniería & confianza total."
+			lead="No somos un taller genérico. Revisamos cada equipo con instrumentos de medición y lo tratamos con cuidado."
+		/>
+		<ul class="lab__grid">
+			{
+				standards.map((standard, index) => (
+					<li class="standard">
+						<span class="standard__index" aria-hidden="true">
+							[ {String(index + 1).padStart(2, '0')} ]
+						</span>
+						<h3 class="standard__title">{standard.title}</h3>
+						<p class="standard__text">{standard.text}</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.lab {
+		padding-block: var(--space-section);
+		background: var(--color-bg);
+		border-top: var(--border);
+	}
+
+	.lab__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+		gap: var(--space-4);
+	}
+
+	/* Each card borrows the grid's rows so titles share a baseline even when one wraps. */
+	.standard {
+		display: grid;
+		grid-row: span 3;
+		grid-template-rows: subgrid;
+		row-gap: 0;
+		padding: var(--space-5);
+		background: var(--color-surface);
+		border: var(--border);
+	}
+
+	.standard__index {
+		margin-bottom: var(--space-6);
+		color: var(--color-accent);
+		font-family: var(--font-mono);
+		font-size: var(--text-2xl);
+		line-height: 1;
+		white-space: nowrap;
+	}
+
+	.standard__title {
+		align-self: end;
+		font-size: var(--text-lg);
+	}
+
+	.standard__text {
+		margin-top: var(--space-2);
+		color: var(--color-text-muted);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+	}
+</style>

@@ -1,0 +1,290 @@
+---
+import { contact } from '../data/site';
+import Button from './Button.astro';
+import SectionHeader from './SectionHeader.astro';
+
+const devices = [
+	'Computador de escritorio',
+	'Portátil',
+	'Consola de videojuegos',
+	'Armado de PC a medida',
+	'Otro',
+];
+
+const urgencies = ['Normal (menos de 48 horas)', 'Urgente (mismo día)', 'Sin apuro, solo quiero cotizar'];
+---
+
+<section id="contacto" class="contact">
+	<div class="container contact__inner">
+		<div class="contact__info">
+			<SectionHeader
+				label="Dónde estamos"
+				title="Contáctanos."
+				lead="Recibimos equipos en el laboratorio con cita previa o por envío asegurado. Respondemos cotizaciones en horario de atención."
+			/>
+			<dl class="contact__details">
+				<div class="detail">
+					<dt class="label">Dirección:</dt>
+					<dd>{contact.address}</dd>
+				</div>
+				<div class="detail">
+					<dt class="label">Horario de atención:</dt>
+					<dd>{contact.hours}</dd>
+				</div>
+				<div class="detail">
+					<dt class="label">Teléfono y correo:</dt>
+					<dd>
+						<a href={contact.phoneHref}>{contact.phone}</a>
+						<span aria-hidden="true"> // </span>
+						<a href={`mailto:${contact.email}`}>{contact.email}</a>
+					</dd>
+				</div>
+			</dl>
+		</div>
+
+		<form
+			class="form"
+			action={`mailto:${contact.email}`}
+			method="post"
+			enctype="text/plain"
+			data-whatsapp={contact.whatsapp}
+		>
+			<h3 class="form__title">Cuéntanos qué necesitas</h3>
+			<p class="form__lead">Con estos datos preparamos tu solicitud.</p>
+
+			<div class="form__grid">
+				<div class="field">
+					<label for="nombre">Nombre completo <span aria-hidden="true">*</span></label>
+					<input id="nombre" name="nombre" type="text" autocomplete="name" placeholder="Ej. Carlos Mendoza" required />
+				</div>
+				<div class="field">
+					<label for="telefono">WhatsApp / Teléfono <span aria-hidden="true">*</span></label>
+					<input id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="+54 9 11 ..." required />
+				</div>
+				<div class="field">
+					<label for="dispositivo">Tipo de dispositivo <span aria-hidden="true">*</span></label>
+					<select id="dispositivo" name="dispositivo" required>
+						{devices.map((device) => <option>{device}</option>)}
+					</select>
+				</div>
+				<div class="field">
+					<label for="urgencia">¿Qué tan urgente es?</label>
+					<select id="urgencia" name="urgencia">
+						{urgencies.map((urgency) => <option>{urgency}</option>)}
+					</select>
+				</div>
+				<div class="field field--wide">
+					<label for="descripcion">
+						¿Qué le pasa a tu equipo o qué quieres armar? <span aria-hidden="true">*</span>
+					</label>
+					<textarea
+						id="descripcion"
+						name="descripcion"
+						rows="4"
+						placeholder="Cuéntanos qué equipo tienes y qué falla notas (se apaga, hace ruido, se calienta), o tu presupuesto si quieres armar uno..."
+						required></textarea>
+				</div>
+			</div>
+
+			<Button type="submit" size="lg" icon="arrow-up-right">Enviar solicitud</Button>
+			<p class="form__status" role="status" hidden>
+				Abrimos WhatsApp con tu solicitud. Envía el mensaje para confirmarla.
+			</p>
+		</form>
+	</div>
+</section>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('.form');
+	const status = form?.querySelector<HTMLElement>('.form__status');
+
+	// With JS the request goes out as a prefilled WhatsApp message; the mailto action is the no-JS fallback.
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const data = new FormData(form);
+		const message = [
+			'Solicitud de servicio — Kinetic Tech Lab',
+			`Nombre: ${data.get('nombre')}`,
+			`Teléfono: ${data.get('telefono')}`,
+			`Dispositivo: ${data.get('dispositivo')}`,
+			`Urgencia: ${data.get('urgencia')}`,
+			`Detalle: ${data.get('descripcion')}`,
+		].join('\n');
+
+		window.open(`https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
+		if (status) status.hidden = false;
+	});
+</script>
+
+<style>
+	.contact {
+		padding-block: var(--space-section);
+		border-top: var(--border);
+	}
+
+	.contact__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		align-items: start;
+		gap: clamp(2rem, 1rem + 3vw, 4rem);
+	}
+
+	.contact__info :global(.section-header) {
+		margin-bottom: var(--space-6);
+	}
+
+	.contact__info :global(.section-header__lead) {
+		font-size: var(--text-base);
+	}
+
+	.contact__details {
+		display: grid;
+		gap: var(--space-4);
+		margin: 0;
+	}
+
+	.detail {
+		display: grid;
+		gap: var(--space-1);
+		padding: var(--space-3) var(--space-4);
+		background: var(--color-surface);
+		border: var(--border);
+	}
+
+	.detail dd {
+		margin: 0;
+		color: var(--color-text);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		overflow-wrap: anywhere;
+	}
+
+	.detail a {
+		text-decoration: underline;
+		text-decoration-color: var(--color-border-strong);
+		text-underline-offset: 0.25em;
+		transition: text-decoration-color var(--transition);
+	}
+
+	.detail a:hover {
+		text-decoration-color: var(--color-accent);
+	}
+
+	.form {
+		position: relative;
+		padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border-strong);
+	}
+
+	.form::before,
+	.form::after {
+		content: '';
+		position: absolute;
+		width: 0.375rem;
+		height: 0.375rem;
+		background: var(--color-accent);
+	}
+
+	.form::before {
+		top: -0.1875rem;
+		left: -0.1875rem;
+	}
+
+	.form::after {
+		right: -0.1875rem;
+		bottom: -0.1875rem;
+	}
+
+	.form__title {
+		font-size: var(--text-2xl);
+	}
+
+	.form__lead {
+		margin-top: var(--space-1);
+		color: var(--color-text-muted);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+	}
+
+	.form__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-5) var(--space-4);
+		margin-block: var(--space-5) var(--space-6);
+	}
+
+	.field {
+		display: grid;
+		gap: var(--space-2);
+	}
+
+	.field--wide {
+		grid-column: 1 / -1;
+	}
+
+	.field label {
+		color: var(--color-text-muted);
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+	}
+
+	.field input,
+	.field select,
+	.field textarea {
+		width: 100%;
+		min-height: 2.75rem;
+		padding: var(--space-3);
+		background: var(--color-bg);
+		border: 1px solid var(--color-border-strong);
+		border-radius: 0;
+		color: var(--color-text);
+		caret-color: var(--color-accent);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		transition: border-color var(--transition);
+	}
+
+	.field textarea {
+		resize: vertical;
+	}
+
+	.field ::placeholder {
+		color: var(--color-text-muted);
+		opacity: 1;
+	}
+
+	.field input:hover,
+	.field select:hover,
+	.field textarea:hover,
+	.field input:focus,
+	.field select:focus,
+	.field textarea:focus {
+		border-color: var(--color-accent);
+	}
+
+	.form :global(.button) {
+		width: 100%;
+	}
+
+	.form__status {
+		margin-top: var(--space-5);
+		color: var(--color-text);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+	}
+
+	@media (max-width: 60rem) {
+		.contact__inner {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+
+	@media (max-width: 36rem) {
+		.form__grid {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

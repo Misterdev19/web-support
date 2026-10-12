@@ -1,0 +1,322 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import DustFigure from './figures/DustFigure.astro';
+
+const services = [
+	{
+		id: '01',
+		tag: 'Computadores y portátiles',
+		title: 'Mantenimiento de computadores',
+		text: 'Desarmamos tu equipo, lo limpiamos por dentro y cambiamos la pasta térmica (el material que ayuda al procesador a no calentarse) por una de mayor calidad. También lubricamos los ventiladores para que hagan menos ruido.',
+		list: [
+			'Limpieza profunda de polvo y suciedad',
+			'Pasta térmica nueva de marcas reconocidas (Thermal Grizzly / Noctua)',
+			'Revisión de la placa madre para detectar piezas dañadas',
+		],
+		cta: { label: 'Solicitar mantenimiento', href: '#contacto' },
+		tone: 'featured',
+	},
+	{
+		id: '02',
+		tag: 'Consolas de videojuegos',
+		title: 'Reparación de consolas',
+		text: 'Arreglamos consolas que hacen mucho ruido, se calientan, se apagan solas o no dan imagen en el televisor. También reparamos fallas del chip de video y de la fuente de poder en consolas de última generación.',
+		chips: [
+			'PS5: limpieza y control de temperatura',
+			'Xbox Series X: limpieza interna',
+			'Nintendo Switch: reparación de placa',
+			'Cambio de puerto HDMI dañado',
+		],
+		cta: { label: 'Agendar reparación', href: '#contacto' },
+	},
+	{
+		id: '03',
+		tag: 'Programas y sistema',
+		title: 'Optimización del sistema',
+		text: 'Dejamos tu computador más rápido y estable: instalamos Windows limpio, sin programas innecesarios, y ajustamos la configuración para que aproveche bien sus piezas sin calentarse de más.',
+		list: [
+			'Menos tirones y trabas al jugar',
+			'Ventiladores más silenciosos',
+			'Menor temperatura en procesadores Intel y AMD',
+		],
+		cta: { label: 'Optimizar mi equipo', href: '#contacto' },
+	},
+	{
+		id: '04',
+		tag: 'Armado a medida',
+		title: 'Armado de PC Gamer a medida',
+		text: 'Armamos tu computador pieza por pieza según lo que necesitas. Calculamos la fuente de poder adecuada, ordenamos los cables por dentro y, si lo quieres, instalamos refrigeración líquida.',
+		list: [
+			'Te asesoramos para que ninguna pieza frene a las demás',
+			'Cableado interno ordenado',
+			'24 horas de pruebas exigentes antes de entregarlo',
+		],
+		cta: { label: 'Ver opciones de armado', href: '#pc-gamer' },
+		tone: 'accent',
+	},
+];
+---
+
+<section id="servicios" class="services">
+	<div class="container">
+		<SectionHeader
+			label="Lo que hacemos"
+			title="Nuestros servicios."
+			lead="El polvo es la avería más común y la más silenciosa: tapa el disipador, el ventilador se acelera y el procesador acaba frenándose solo. Así se ve desde dentro."
+		/>
+		<div class="services__figure">
+			<DustFigure />
+		</div>
+
+		<ul class="services__grid">
+			{
+				services.map((service) => (
+					<li>
+						<article class:list={['service', service.tone && `service--${service.tone}`]}>
+							<p class="service__meta">
+								<span class="service__id">Servicio_{service.id}</span>
+								<span class="service__tag">{service.tag}</span>
+							</p>
+							<div class="service__body">
+								<h3 class="service__title">{service.title}</h3>
+								<p class="service__text">{service.text}</p>
+								{service.list && (
+									<ul class="service__list">
+										{service.list.map((item) => (
+											<li>{item}</li>
+										))}
+									</ul>
+								)}
+								{service.chips && (
+									<ul class="service__chips">
+										{service.chips.map((chip) => (
+											<li>{chip}</li>
+										))}
+									</ul>
+								)}
+							</div>
+							<a class="service__cta" href={service.cta.href}>
+								{service.cta.label}
+								<span aria-hidden="true">↗</span>
+							</a>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.services {
+		padding-block: var(--space-section);
+		border-top: var(--border);
+	}
+
+	.services__figure {
+		max-width: 38rem;
+	}
+
+	.services__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-5);
+		margin-top: var(--space-7);
+	}
+
+	.service {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: var(--space-6);
+		background: var(--color-surface);
+		border: var(--border);
+	}
+
+	.service::before,
+	.service::after {
+		content: '';
+		position: absolute;
+		width: 0.375rem;
+		height: 0.375rem;
+		background: var(--color-accent);
+	}
+
+	.service::before {
+		top: -0.1875rem;
+		left: -0.1875rem;
+	}
+
+	.service::after {
+		right: -0.1875rem;
+		bottom: -0.1875rem;
+	}
+
+	.service__meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-2) var(--space-4);
+		padding-bottom: var(--space-4);
+		margin-bottom: var(--space-5);
+		border-bottom: var(--border);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+	}
+
+	.service__id {
+		padding: var(--space-1) var(--space-3);
+		background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+		color: var(--color-accent);
+		font-weight: 700;
+	}
+
+	.service__tag {
+		color: var(--color-text-muted);
+	}
+
+	.service__body {
+		flex: 1;
+		margin-bottom: var(--space-6);
+	}
+
+	.service__title {
+		font-size: var(--text-3xl);
+		line-height: 1.05;
+		text-wrap: balance;
+	}
+
+	.service__text {
+		margin-top: var(--space-3);
+	}
+
+	.service__list,
+	.service__chips {
+		margin-top: var(--space-5);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+	}
+
+	.service__list {
+		display: grid;
+		gap: var(--space-2);
+	}
+
+	.service__list li {
+		position: relative;
+		padding-left: var(--space-4);
+	}
+
+	.service__list li::before {
+		content: '';
+		position: absolute;
+		top: 0.55em;
+		left: 0;
+		width: 0.3125rem;
+		height: 0.3125rem;
+		background: var(--color-accent);
+	}
+
+	.service__chips {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-2);
+	}
+
+	.service__chips li {
+		padding: var(--space-2) var(--space-3);
+		background: var(--color-bg);
+		border: var(--border);
+	}
+
+	.service__cta {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-4);
+		min-height: 2.75rem;
+		padding: var(--space-3) var(--space-5);
+		background: var(--color-surface-raised);
+		border: 1px solid var(--color-border-strong);
+		color: var(--color-accent);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		font-weight: 700;
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		transition:
+			background-color var(--transition),
+			border-color var(--transition);
+	}
+
+	.service__cta:hover {
+		border-color: var(--color-accent);
+	}
+
+	.service--accent .service__cta {
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+		color: var(--color-on-accent);
+	}
+
+	.service--accent .service__cta:hover {
+		background: var(--color-accent-hover);
+	}
+
+	.service--featured {
+		background: var(--color-cream);
+		border-color: var(--color-cream);
+		color: var(--color-on-cream);
+	}
+
+	.service--featured .service__meta {
+		border-color: color-mix(in srgb, var(--color-on-cream) 22%, transparent);
+	}
+
+	.service--featured .service__id {
+		background: color-mix(in srgb, var(--color-accent) 28%, var(--color-cream));
+		color: var(--color-on-cream);
+	}
+
+	.service--featured .service__tag {
+		color: color-mix(in srgb, var(--color-on-cream) 72%, var(--color-cream));
+	}
+
+	.service--featured .service__title {
+		color: var(--color-on-cream);
+	}
+
+	.service--featured .service__list li::before {
+		background: var(--color-on-cream);
+	}
+
+	.service--featured .service__cta {
+		background: var(--color-on-cream);
+		border-color: var(--color-on-cream);
+		color: var(--color-cream);
+	}
+
+	.service--featured .service__cta:hover {
+		background: var(--color-bg);
+	}
+
+	@media (max-width: 56rem) {
+		.services__grid {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+
+	@media (max-width: 30rem) {
+		.service {
+			padding: var(--space-5);
+		}
+
+		.service__chips {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

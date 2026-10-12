@@ -1,0 +1,221 @@
+---
+import Button from './Button.astro';
+
+const links = [
+	{ label: 'Servicios', href: '#servicios' },
+	{ label: 'PC Gamer', href: '#pc-gamer' },
+	{ label: 'Laboratorio', href: '#laboratorio' },
+	{ label: 'Proceso', href: '#proceso' },
+	{ label: 'Contacto', href: '#contacto' },
+];
+---
+
+<header class="header">
+	<div class="container header__inner">
+		<a class="brand" href="/" aria-label="Kinetic Tech Lab, inicio">
+			<span class="brand__mark" aria-hidden="true">KT_</span>
+			<span class="brand__text">
+				<span class="brand__name">Kinetic Tech Lab</span>
+				<span class="brand__tagline">Servicio técnico // PC y consolas</span>
+			</span>
+		</a>
+
+		<nav id="menu-principal" class="nav" aria-label="Principal">
+			<ul class="nav__list">
+				{
+					links.map((link, index) => (
+						<li>
+							<a class="nav__link" href={link.href}>
+								<span class="nav__index" aria-hidden="true">[{String(index + 1).padStart(2, '0')}]</span>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<Button class="header__cta" href="#contacto" icon="arrow-up-right">Solicitar servicio</Button>
+
+		<button class="menu-toggle" type="button" aria-controls="menu-principal" aria-expanded="false">
+			<span class="menu-toggle__label">Menú</span>
+		</button>
+	</div>
+</header>
+
+<script>
+	const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+	const nav = document.querySelector<HTMLElement>('#menu-principal');
+
+	if (toggle && nav) {
+		const setOpen = (open: boolean) => {
+			toggle.setAttribute('aria-expanded', String(open));
+			nav.classList.toggle('nav--open', open);
+		};
+
+		toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+		nav.addEventListener('click', (event) => {
+			if ((event.target as HTMLElement).closest('a')) setOpen(false);
+		});
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') setOpen(false);
+		});
+	}
+</script>
+
+<style>
+	.header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+		border-bottom: var(--border);
+		backdrop-filter: blur(12px);
+	}
+
+	.header__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-5);
+		min-height: var(--header-height);
+	}
+
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+	}
+
+	.brand__mark {
+		display: grid;
+		place-items: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		background: var(--color-accent);
+		color: var(--color-on-accent);
+		font-family: var(--font-display);
+		font-size: var(--text-lg);
+		font-weight: 700;
+	}
+
+	.brand__text {
+		display: flex;
+		flex-direction: column;
+		line-height: var(--leading-snug);
+	}
+
+	.brand__name {
+		color: var(--color-text);
+		font-family: var(--font-display);
+		font-size: var(--text-lg);
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.brand__tagline {
+		color: var(--color-accent);
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.brand,
+	.header :global(.header__cta) {
+		flex-shrink: 0;
+	}
+
+	.nav__list {
+		display: flex;
+		gap: var(--space-5);
+	}
+
+	.nav__link {
+		display: inline-flex;
+		gap: var(--space-2);
+		padding-block: var(--space-2);
+		color: var(--color-text-body);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		transition: color var(--transition);
+	}
+
+	.nav__link:hover {
+		color: var(--color-text);
+	}
+
+	.nav__index {
+		color: var(--color-accent);
+	}
+
+	.menu-toggle {
+		display: none;
+		min-height: 2.75rem;
+		padding: var(--space-2) var(--space-4);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border-strong);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+
+	.menu-toggle[aria-expanded='true'] {
+		border-color: var(--color-accent);
+		color: var(--color-accent);
+	}
+
+	@media (max-width: 76rem) {
+		.header__inner {
+			flex-wrap: wrap;
+			row-gap: 0;
+		}
+
+		.menu-toggle {
+			display: inline-flex;
+			align-items: center;
+		}
+
+		.header :global(.header__cta) {
+			margin-left: auto;
+		}
+
+		.nav {
+			display: none;
+			order: 4;
+			width: 100%;
+			padding-block: var(--space-3) var(--space-5);
+			border-top: var(--border);
+		}
+
+		.nav.nav--open {
+			display: block;
+		}
+
+		.nav__list {
+			flex-direction: column;
+			gap: 0;
+		}
+
+		.nav__link {
+			width: 100%;
+			padding-block: var(--space-3);
+			font-size: var(--text-sm);
+		}
+	}
+
+	@media (max-width: 40rem) {
+		.brand__tagline,
+		.header :global(.header__cta) {
+			display: none;
+		}
+	}
+</style>

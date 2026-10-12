@@ -1,23 +1,34 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Kinetic Tech Lab — Mantenimiento y reparación de computadores y consolas',
+	description = 'Mantenimiento, reparación y armado a medida de computadores y consolas de videojuegos, con diagnóstico claro y garantía escrita.',
+} = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		<Font cssVariable="--font-oswald" preload />
+		<Font cssVariable="--font-inter" />
+		<Font cssVariable="--font-jetbrains-mono" />
+		<title>{title}</title>
 	</head>
 	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
 		<slot />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
